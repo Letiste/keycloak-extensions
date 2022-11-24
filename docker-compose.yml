@@ -1,0 +1,33 @@
+version: '3'
+
+services:
+  mariadb:
+    image: mariadb:10
+    container_name: mariadb
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: keycloak
+      MYSQL_USER: keycloak
+      MYSQL_PASSWORD: keycloak
+    ports:
+      - 3306:3306
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:latest
+    container_name: keycloak
+    environment:
+      DB_VENDOR: MARIADB
+      DB_ADDR: mariadb
+      DB_DATABASE: keycloak
+      DB_USER: keycloak
+      DB_PASSWORD: keycloak
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+    entrypoint: ["/opt/keycloak/bin/kc.sh", "start-dev --import-realm"]
+    ports:
+      - 8080:8080
+    volumes:
+      - ./target/rezoleo-providers-1.0-SNAPSHOT.jar:/opt/keycloak/providers/rezoleo-providers-1.0-SNAPSHOT.jar
+      - ./rezoleo-realm-export.json:/opt/keycloak/data/import/rezoleo-realm-export.json
+    depends_on:
+      - mariadb
