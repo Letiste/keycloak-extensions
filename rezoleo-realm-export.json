@@ -371,6 +371,34 @@
   "webAuthnPolicyPasswordlessCreateTimeout" : 0,
   "webAuthnPolicyPasswordlessAvoidSameAuthenticatorRegister" : false,
   "webAuthnPolicyPasswordlessAcceptableAaguids" : [ ],
+  "users" : [ {
+    "id" : "876940c6-76e2-436f-b69d-422bcd7e245b",
+    "createdTimestamp" : 1669312220419,
+    "username" : "toto",
+    "enabled" : true,
+    "totp" : false,
+    "emailVerified" : false,
+    "firstName" : "djwdn",
+    "lastName" : "djwdn",
+    "email" : "djwdn@toto.com",
+    "attributes" : {
+      "locale" : [ "en" ],
+      "room" : [ "f123" ]
+    },
+    "credentials" : [ {
+      "id" : "9c453479-38a9-4d26-8f53-41eb6b43cb3b",
+      "type" : "password",
+      "userLabel" : "My password",
+      "createdDate" : 1669312329206,
+      "secretData" : "{\"value\":\"SXQw1xrRvMALvv99B3VcGGcZIqlP54+dULHM7ooikoZ9mn5oYIBt1WY7lya4w3lRMeX9Z+IC2M8z04y25eOG/g==\",\"salt\":\"j5UpMsavDyJ8NCe8aZXiXA==\",\"additionalParameters\":{}}",
+      "credentialData" : "{\"hashIterations\":27500,\"algorithm\":\"pbkdf2-sha256\",\"additionalParameters\":{}}"
+    } ],
+    "disableableCredentialTypes" : [ ],
+    "requiredActions" : [ ],
+    "realmRoles" : [ "default-roles-rezoleo" ],
+    "notBefore" : 0,
+    "groups" : [ ]
+  } ],
   "scopeMappings" : [ {
     "clientScope" : "offline_access",
     "roles" : [ "offline_access" ]
@@ -1049,7 +1077,7 @@
   },
   "smtpServer" : { },
   "eventsEnabled" : false,
-  "eventsListeners" : [ "edit_event_listener", "jboss-logging" ],
+  "eventsListeners" : [ "edit-user", "jboss-logging" ],
   "enabledEventTypes" : [ ],
   "adminEventsEnabled" : false,
   "adminEventsDetailsEnabled" : false,

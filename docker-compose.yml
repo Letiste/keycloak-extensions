@@ -23,7 +23,8 @@ services:
       DB_PASSWORD: keycloak
       KEYCLOAK_ADMIN: admin
       KEYCLOAK_ADMIN_PASSWORD: admin
-    entrypoint: ["/opt/keycloak/bin/kc.sh", "start-dev --import-realm"]
+      USER_UPDATE_EVENT_NOTIFICATION_URL: "http://host.docker.internal:3000/patch-user"
+    entrypoint: [ "/opt/keycloak/bin/kc.sh", "start-dev --import-realm" ]
     ports:
       - 8080:8080
     volumes:
@@ -31,3 +32,5 @@ services:
       - ./rezoleo-realm-export.json:/opt/keycloak/data/import/rezoleo-realm-export.json
     depends_on:
       - mariadb
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
