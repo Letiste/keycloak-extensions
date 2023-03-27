@@ -32,49 +32,49 @@
      public void onEvent(Event event) {
          // TODO: filter specific client if update originated from him?
          // TODO: test with room
-//         if (isUserUpdate(event)) {
-//             log.info("User update on " + getUserId(event));
-//             System.out.println("DETAILS: " + event.getDetails().toString());
-//             String userJson = userToJson(event);
-//             HttpRequest request = HttpRequest.newBuilder()
-//                     .uri(URI.create(this.editUserEventNotificationUrl))
-//                     .method("PATCH", HttpRequest.BodyPublishers.ofString(userJson))
-//                     .header("Content-Type", "application/json")
-//                     .timeout(Duration.ofSeconds(REQUEST_TIMEOUT))
-//                     .build();
-//             try {
-//                 log.info("Send user update notifcation");
-//                 HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-//                 log.info("User update notification sent: " + response);
-//             } catch (IOException e) {
-//                 log.error(e.toString());
-//             } catch (InterruptedException e) {
-//                 log.error(e.toString());
-//             }
-//         }
+         if (isUserUpdate(event)) {
+             log.info("User update on " + getUserId(event));
+             System.out.println("DETAILS: " + event.getDetails().toString());
+             String userJson = userToJson(event);
+             HttpRequest request = HttpRequest.newBuilder()
+                     .uri(URI.create(this.editUserEventNotificationUrl))
+                     .method("PATCH", HttpRequest.BodyPublishers.ofString(userJson))
+                     .header("Content-Type", "application/json")
+                     .timeout(Duration.ofSeconds(REQUEST_TIMEOUT))
+                     .build();
+             try {
+                 log.info("Send user update notifcation");
+                 HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+                 log.info("User update notification sent: " + response);
+             } catch (IOException e) {
+                 log.error(e.toString());
+             } catch (InterruptedException e) {
+                 log.error(e.toString());
+             }
+         }
      }
 
      @Override
      public void onEvent(AdminEvent adminEvent, boolean b) {
-//         if (isUserUpdate(adminEvent)) {
-//             log.info("User update on " + getUserId(adminEvent));
-//             String userJson = userToJson(adminEvent);
-//             HttpRequest request = HttpRequest.newBuilder()
-//                     .uri(URI.create(this.editUserEventNotificationUrl))
-//                     .method("PATCH", HttpRequest.BodyPublishers.ofString(userJson))
-//                     .header("Content-Type", "application/json")
-//                     .timeout(Duration.ofSeconds(REQUEST_TIMEOUT))
-//                     .build();
-//             try {
-//                 log.info("Send user update notifcation");
-//                 HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-//                 log.info("User update notification sent: " + response);
-//             } catch (IOException e) {
-//                 log.error(e.toString());
-//             } catch (InterruptedException e) {
-//                 log.error(e.toString());
-//             }
-//         }
+         if (isUserUpdate(adminEvent)) {
+             log.info("User update on " + getUserId(adminEvent));
+             String userJson = userToJson(adminEvent);
+             HttpRequest request = HttpRequest.newBuilder()
+                     .uri(URI.create(this.editUserEventNotificationUrl))
+                     .method("PATCH", HttpRequest.BodyPublishers.ofString(userJson))
+                     .header("Content-Type", "application/json")
+                     .timeout(Duration.ofSeconds(REQUEST_TIMEOUT))
+                     .build();
+             try {
+                 log.info("Send user update notifcation");
+                 HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+                 log.info("User update notification sent: " + response);
+             } catch (IOException e) {
+                 log.error(e.toString());
+             } catch (InterruptedException e) {
+                 log.error(e.toString());
+             }
+         }
      }
 
      @Override
