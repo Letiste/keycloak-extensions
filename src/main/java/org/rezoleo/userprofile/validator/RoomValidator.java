@@ -62,7 +62,7 @@ public class RoomValidator extends AbstractStringValidator implements Configured
             isRoomTaken = !usersInCurrentRoom.isEmpty() && !currentUser.getId().equals(usersInCurrentRoom.get(0).getId());
         }
         if (isRoomTaken) {
-            context.addError(new ValidationError(ID, inputHint, "this room already belongs to another user"));
+            context.addError(new ValidationError(ID, inputHint, "This room already belongs to another user"));
         }
     }
 
