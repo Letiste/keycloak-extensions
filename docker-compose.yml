@@ -17,16 +17,19 @@ services:
     container_name: keycloak
     environment:
       DB_VENDOR: MARIADB
-      DB_ADDR: mariadb
+      DB_URL: mariadb
       DB_DATABASE: keycloak
       DB_USER: keycloak
       DB_PASSWORD: keycloak
       KEYCLOAK_ADMIN: admin
       KEYCLOAK_ADMIN_PASSWORD: admin
       USER_UPDATE_EVENT_NOTIFICATION_URL: "http://host.docker.internal:3000/patch-user"
-    entrypoint: [ "/opt/keycloak/bin/kc.sh", "start-dev --import-realm" ]
+      DEBUG: true
+      DEBUG_PORT: "*:8787"
+    entrypoint: /opt/keycloak/bin/kc.sh --debug start-dev --import-realm --features=declarative-user-profile
     ports:
       - 8080:8080
+      - 8787:8787
     volumes:
       - ./target/rezoleo-providers-1.0-SNAPSHOT.jar:/opt/keycloak/providers/rezoleo-providers-1.0-SNAPSHOT.jar
       - ./rezoleo-realm-export.json:/opt/keycloak/data/import/rezoleo-realm-export.json
