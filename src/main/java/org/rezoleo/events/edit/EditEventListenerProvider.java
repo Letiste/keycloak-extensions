@@ -1,7 +1,8 @@
  package org.rezoleo.events.edit;
 
+ import com.fasterxml.jackson.core.JsonProcessingException;
+ import com.fasterxml.jackson.databind.ObjectMapper;
  import org.jboss.logging.Logger;
- import org.json.JSONObject;
  import org.keycloak.events.Event;
  import org.keycloak.events.EventListenerProvider;
  import org.keycloak.events.EventType;
@@ -15,10 +16,13 @@
  import java.net.http.HttpRequest;
  import java.net.http.HttpResponse;
  import java.time.Duration;
+ import java.util.HashMap;
+ import java.util.List;
  import java.util.Map;
 
  public class EditEventListenerProvider implements EventListenerProvider {
      private static final Logger log = Logger.getLogger(EditEventListenerProvider.class);
+     private static ObjectMapper mapper = new ObjectMapper();
      private static final int REQUEST_TIMEOUT = 5;
      private final HttpClient client;
      private final String editUserEventNotificationUrl;
@@ -35,7 +39,12 @@
          if (isUserUpdate(event)) {
              log.info("User update on " + getUserId(event));
              System.out.println("DETAILS: " + event.getDetails().toString());
-             String userJson = userToJson(event);
+             String userJson = null;
+             try {
+                 userJson = userToJson(event);
+             } catch (JsonProcessingException e) {
+                 throw new RuntimeException(e);
+             }
              HttpRequest request = HttpRequest.newBuilder()
                      .uri(URI.create(this.editUserEventNotificationUrl))
                      .method("PATCH", HttpRequest.BodyPublishers.ofString(userJson))
@@ -58,7 +67,12 @@
      public void onEvent(AdminEvent adminEvent, boolean b) {
          if (isUserUpdate(adminEvent)) {
              log.info("User update on " + getUserId(adminEvent));
-             String userJson = userToJson(adminEvent);
+             String userJson = null;
+             try {
+                 userJson = userToJson(adminEvent);
+             } catch (JsonProcessingException e) {
+                 throw new RuntimeException(e);
+             }
              HttpRequest request = HttpRequest.newBuilder()
                      .uri(URI.create(this.editUserEventNotificationUrl))
                      .method("PATCH", HttpRequest.BodyPublishers.ofString(userJson))
@@ -92,9 +106,9 @@
          return isUpdate && isUserResource;
      }
 
-     private String userToJson(Event event) {
+     private String userToJson(Event event) throws JsonProcessingException {
          Map<String, String> changes = event.getDetails();
-         JSONObject userJson = new JSONObject();
+         Map userJson = new HashMap();
          userJson.put("sso_id", getUserId(event));
          addUpdatedValueToJson(changes, userJson, "updated_first_name", "firstname");
          addUpdatedValueToJson(changes, userJson, "updated_last_name", "lastname");
@@ -102,34 +116,34 @@
  //        if (json.has("attributes") && json.getJSONObject("attributes").has("room")) {
  //            userJson.put("room", json.getJSONObject("attributes").getJSONArray("room").getString(0));
  //        }
-         log.debug(userJson.toString());
-         return userJson.toString();
+         log.debug(mapper.writeValueAsString(userJson));
+         return mapper.writeValueAsString(userJson);
      }
 
-     private void addUpdatedValueToJson(Map<String, String> changes, JSONObject userJson, String updatedValue, String jsonKey) {
+     private void addUpdatedValueToJson(Map<String, String> changes, Map userJson, String updatedValue, String jsonKey) {
          if (changes.containsKey(updatedValue)) {
              userJson.put(jsonKey, changes.get(updatedValue));
          }
      }
 
-     private String userToJson(AdminEvent adminEvent) {
+     private String userToJson(AdminEvent adminEvent) throws JsonProcessingException {
          String user = adminEvent.getRepresentation();
-         JSONObject userJson = new JSONObject();
-         JSONObject json = new JSONObject(user);
+         Map<String, Object> userJson = new HashMap<>();
+         Map<String, Object> json = mapper.readValue(user, Map.class);
          userJson.put("sso_id", getUserId(adminEvent));
          addValueToJson(userJson, json, "firstName", "firstname");
          addValueToJson(userJson, json, "lastName", "lastname");
          addValueToJson(userJson, json, "email", "email");
-         if (json.has("attributes") && json.getJSONObject("attributes").has("room")) {
-             userJson.put("room", json.getJSONObject("attributes").getJSONArray("room").getString(0));
+         if (json.containsKey("attributes") && ((Map) json.get("attributes")).containsKey("room")) {
+             userJson.put("room", ((List)((Map)json.get("attributes")).get("room")).get(0));
          }
-         log.debug(userJson.toString());
-         return userJson.toString();
+         log.debug(mapper.writeValueAsString(userJson));
+         return mapper.writeValueAsString(userJson);
      }
 
-     private void addValueToJson(JSONObject userJson, JSONObject json, String updatedValue, String jsonKey) {
-         if (json.has(updatedValue)) {
-             userJson.put(jsonKey, json.getString(updatedValue));
+     private void addValueToJson(Map userJson, Map json, String updatedValue, String jsonKey) {
+         if (json.containsKey(updatedValue)) {
+             userJson.put(jsonKey, json.get(updatedValue));
          }
      }
 
