@@ -24,7 +24,6 @@ services:
       KEYCLOAK_ADMIN: admin
       KEYCLOAK_ADMIN_PASSWORD: admin
       USER_UPDATE_EVENT_NOTIFICATION_URL: "http://host.docker.internal:3000/patch-user"
-      DEBUG: true
       DEBUG_PORT: "*:8787"
     entrypoint: /opt/keycloak/bin/kc.sh --debug start-dev --import-realm --features=declarative-user-profile
     ports:
