@@ -36,10 +36,11 @@
      public void onEvent(Event event) {
          // TODO: filter specific client if update originated from him?
          // TODO: test with room
+         if (this.editUserEventNotificationUrl == null) return;
          if (isUserUpdate(event)) {
              log.info("User update on " + getUserId(event));
              System.out.println("DETAILS: " + event.getDetails().toString());
-             String userJson = null;
+             String userJson;
              try {
                  userJson = userToJson(event);
              } catch (JsonProcessingException e) {
@@ -65,9 +66,10 @@
 
      @Override
      public void onEvent(AdminEvent adminEvent, boolean b) {
+         if (this.editUserEventNotificationUrl == null) return;
          if (isUserUpdate(adminEvent)) {
              log.info("User update on " + getUserId(adminEvent));
-             String userJson = null;
+             String userJson;
              try {
                  userJson = userToJson(adminEvent);
              } catch (JsonProcessingException e) {

@@ -1,0 +1,3 @@
+org\rezoleo\events\edit\EditEventListenerProviderFactory.class
+org\rezoleo\userprofile\validator\RoomValidator.class
+org\rezoleo\events\edit\EditEventListenerProvider.class

@@ -21,9 +21,9 @@ public class EditEventListenerProviderFactory implements EventListenerProviderFa
     @Override
     public void init(Config.Scope scope) {
         this.url = System.getenv("USER_UPDATE_EVENT_NOTIFICATION_URL");
-        if (this.url == null) {
-            throw new Error("Environment variable USER_UPDATE_EVENT_NOTIFICATION_URL is not set");
-        }
+//        if (this.url == null) {
+//            throw new Error("Environment variable USER_UPDATE_EVENT_NOTIFICATION_URL is not set");
+//        }
     }
 
     @Override
