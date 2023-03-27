@@ -19,8 +19,8 @@ public class RoomValidator extends AbstractStringValidator implements Configured
 
     public static final String ID = "room";
     private static final Logger log = Logger.getLogger(RoomValidator.class);
-
-    protected static final Pattern PATTERN = Pattern.compile("([A-Fa-f][0-3][0-9]{2}[a-b]?|[Dd][Ff][1-4])");
+    // TODO: Find a way to format the room (f123 should be authorized and formatted to F123)
+    protected static final Pattern PATTERN = Pattern.compile("([A-F][0-3][0-9]{2}[a-b]?|DF[1-4])");
 
     public static final RoomValidator INSTANCE = new RoomValidator();
 
@@ -49,7 +49,7 @@ public class RoomValidator extends AbstractStringValidator implements Configured
     protected void doValidate(String value, String inputHint, ValidationContext context, ValidatorConfig config) {
         log.info("VALIDATING ROOM");
         if (!PATTERN.matcher(value).matches()) {
-            context.addError(new ValidationError(ID, inputHint, "The room does not have the correct format"));
+            context.addError(new ValidationError(ID, inputHint, "The room does not have the correct format. Examples of correct format are F123a or DF2"));
         }
 
         UserModel currentUser = ((UserProfileAttributeValidationContext) context).getAttributeContext().getUser();
