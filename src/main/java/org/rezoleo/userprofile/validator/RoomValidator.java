@@ -50,6 +50,7 @@ public class RoomValidator extends AbstractStringValidator implements Configured
         log.info("VALIDATING ROOM");
         if (!PATTERN.matcher(value).matches()) {
             context.addError(new ValidationError(ID, inputHint, "The room does not have the correct format. Examples of correct format are F123a or DF2"));
+            return;
         }
 
         UserModel currentUser = ((UserProfileAttributeValidationContext) context).getAttributeContext().getUser();
